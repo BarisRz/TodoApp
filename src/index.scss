@@ -11,6 +11,7 @@ body {
   height: 100svh;
   font-family: Josefin Sans;
   font-size: 18px;
+  color: #484b6a;
 }
 
 * {
@@ -23,8 +24,12 @@ body {
 
 .container {
   width: 540px;
-  .roundicon {
-    border: 2px solid hsl(0, 5%, 88%);
+  .estDesac {
+    background: linear-gradient(
+      -45deg,
+      rgba(192, 88, 243, 1) 0%,
+      rgba(87, 221, 255, 1) 100%
+    );
   }
 }
 

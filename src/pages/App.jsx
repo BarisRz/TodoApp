@@ -1,13 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Todo from "../components/Todo";
-import Checkbox from "../components/Checkbox";
-
 import BackgroundLight from "../assets/images/bg-desktop-light.jpg";
 import moon from "../assets/svg/icon-moon.svg";
 import sun from "../assets/svg/icon-sun.svg";
+import Filter from "../components/Filter";
+import Vide from "../components/Vide";
 
 function App() {
   const [theme, setTheme] = useState("light");
+  const [toMake, setToMake] = useState([]);
+  const [completed, setCompleted] = useState(0);
+  const [newTodo, setNewTodo] = useState("");
+  const [filter, setFilter] = useState(toMake);
+  const [isActive, setIsActive] = useState(0);
+  const [id, setId] = useState(0);
+
+  const handleInputChange = (event) => {
+    setNewTodo(event.target.value);
+  };
+
+  const handleEnterPress = (event) => {
+    if (newTodo.length && event.key === "Enter") {
+      setId(() => id + 1);
+      setToMake(() => [
+        ...toMake,
+        {
+          taskname: newTodo.trim(),
+          isCompleted: false,
+          id: id,
+        },
+      ]);
+      setNewTodo("");
+    }
+  };
+
+  useEffect(() => {
+    if (isActive === 1) {
+      if (filter.length === 0) {
+        setIsActive(0);
+      }
+      setFilter(toMake.filter((element) => element.isCompleted === false));
+    } else if (isActive === 2) {
+      setFilter(toMake.filter((element) => element.isCompleted === true));
+    } else {
+      setFilter(toMake);
+    }
+    setCompleted(toMake.filter((element) => element.isCompleted).length);
+  }, [toMake, isActive]);
 
   return (
     <>
@@ -17,31 +56,52 @@ function App() {
           src={BackgroundLight}
         />
         <div className="container">
-          <div className="titre flex justify-between mt-20">
-            <h1 className="text-white text-5xl font-bold tracking-[1rem]">
+          <div className="titre flex justify-between mt-16">
+            <h1 className="text-white text-4xl font-bold tracking-[1rem]">
               TODO
             </h1>
             <img
-              className="h-9"
+              className="h-7"
               src={theme === "light" ? moon : sun}
               alt={theme === "light" ? "darkmode toggle" : "lightmode toggle"}
             />
           </div>
-          <div className="pl-3 h-16 flex bg-white justify-around items-center mt-10 rounded-md">
-            <Checkbox />
+          <div className="pl-3 h-16 flex bg-white justify-around items-center mt-10 rounded-md shadow-lg">
+            <div className="h-7 w-7 rounded-full border-2"></div>
             <input
               type="search"
               className="w-10/12 px-2 h-8 focus:border-none"
               placeholder="Create a new todo"
+              value={newTodo}
+              onChange={handleInputChange}
+              onKeyDown={handleEnterPress}
             />
           </div>
-          <div className="todolist grid rounded-md overflow-hidden">
-            <Todo />
-            <Todo />
-            <Todo />
-            <Todo />
-            <Todo />
-            <Todo />
+          <div className="todolist grid rounded-md mt-5 shadow-2xl overflow-hidden mb-10">
+            {toMake.length === 0 ? (
+              <Vide />
+            ) : (
+              filter
+                .map((element) => (
+                  <Todo
+                    texte={element.taskname}
+                    isCompleted={element.isCompleted}
+                    toMake={toMake}
+                    setToMake={setToMake}
+                    id={element.id}
+                    key={element.id}
+                  />
+                ))
+                .reverse()
+            )}
+            <Filter
+              completed={toMake.length - completed}
+              isActive={isActive}
+              setisActive={setIsActive}
+              setFilter={setFilter}
+              toMake={toMake}
+              setToMake={setToMake}
+            />
           </div>
         </div>
       </div>

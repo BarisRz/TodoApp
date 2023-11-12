@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 function Filter({ completed, isActive, setisActive, toMake, setToMake }) {
   return (
-    <div className="filter flex items-center justify-around bg-white border text-xs text-gray-400">
+    <div className="filter flex items-center justify-around bg-white border text-xs text-gray-400 max-sm:text-[0.6rem]">
       <p>
         {completed} {completed > 1 ? "tasks left" : "task left"}
       </p>

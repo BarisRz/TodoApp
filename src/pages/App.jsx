@@ -33,6 +33,10 @@ function App() {
       setNewTodo("");
     }
   };
+  useEffect(() => {
+    const data = window.localStorage.getItem("TODO_APP_LIST");
+    if (data) setToMake(JSON.parse(data));
+  }, []);
 
   useEffect(() => {
     if (isActive === 1) {
@@ -47,6 +51,10 @@ function App() {
     }
     setCompleted(toMake.filter((element) => element.isCompleted).length);
   }, [toMake, isActive]);
+
+  useEffect(() => {
+    window.localStorage.setItem("TODO_APP_LIST", JSON.stringify(toMake));
+  }, [toMake]);
 
   return (
     <>

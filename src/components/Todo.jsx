@@ -12,7 +12,7 @@ function Todo({ texte, isCompleted, toMake, setToMake, id }) {
   };
 
   return (
-    <div className="px-3 flex bg-white justify-around items-center border group overflow-hidden">
+    <>
       <div
         className={`roundicon h-7 w-7 rounded-full border-2 transition ${
           isCompleted ? "estDesac" : "hover:border-[#C058F3]"
@@ -36,7 +36,7 @@ function Todo({ texte, isCompleted, toMake, setToMake, id }) {
           }}
         />
       </div>
-    </div>
+    </>
   );
 }
 

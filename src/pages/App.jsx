@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Reorder } from "framer-motion";
 import Todo from "../components/Todo";
 import BackgroundLight from "../assets/images/bg-desktop-light.jpg";
 import moon from "../assets/svg/icon-moon.svg";
@@ -85,32 +86,43 @@ function App() {
               onKeyDown={handleEnterPress}
             />
           </div>
-          <div className="todolist grid rounded-md mt-5 shadow-2xl overflow-hidden mb-10">
-            {toMake.length === 0 ? (
-              <Vide />
-            ) : (
-              filter
-                .map((element) => (
-                  <Todo
-                    texte={element.taskname}
-                    isCompleted={element.isCompleted}
-                    toMake={toMake}
-                    setToMake={setToMake}
-                    id={element.id}
+          <Reorder.Group
+            as="div"
+            axis="y"
+            values={toMake}
+            onReorder={setToMake}
+          >
+            <div className="todolist grid rounded-md mt-5 shadow-2xl overflow-hidden mb-10">
+              {toMake.length === 0 ? (
+                <Vide />
+              ) : (
+                filter.map((element) => (
+                  <Reorder.Item
+                    as="div"
                     key={element.id}
-                  />
+                    value={element}
+                    className="px-3 flex bg-white justify-around items-center border group overflow-hidden"
+                  >
+                    <Todo
+                      texte={element.taskname}
+                      isCompleted={element.isCompleted}
+                      toMake={toMake}
+                      setToMake={setToMake}
+                      id={element.id}
+                    />
+                  </Reorder.Item>
                 ))
-                .reverse()
-            )}
-            <Filter
-              completed={toMake.length - completed}
-              isActive={isActive}
-              setisActive={setIsActive}
-              setFilter={setFilter}
-              toMake={toMake}
-              setToMake={setToMake}
-            />
-          </div>
+              )}
+              <Filter
+                completed={toMake.length - completed}
+                isActive={isActive}
+                setisActive={setIsActive}
+                setFilter={setFilter}
+                toMake={toMake}
+                setToMake={setToMake}
+              />
+            </div>
+          </Reorder.Group>
         </div>
       </div>
     </>
